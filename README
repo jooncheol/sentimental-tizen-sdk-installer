@@ -1,0 +1,20 @@
+Sentimental Tizen SDK Installer
+
+This is the unofficial Tizen SDK Installer. 
+
+1. Build
+ Require pakcages to build: libqt4-dev, qmake-qt4, qt4-dev-tools
+ Require pacakges to run (Optional): packagekit
+ $ qmake
+ $ make
+
+2. Usage
+ $ ./sentimental-tizen-sdk-installer
+
+ If you want to install using mirror site, run with the mirror's
+ package index URL
+ $ ./sentimental-tizen-sdk-installer http://mirror.site/tizen/Packages.list
+
+ with MeeGo character
+ $ ./sentimental-tizen-sdk-installer --with-meego
+

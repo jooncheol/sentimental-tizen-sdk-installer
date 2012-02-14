@@ -1,0 +1,2 @@
+* PackageKit support to install dependent deb/rpm packages
+* Collect *.pkgs into dependencies directory to support All linux distros.

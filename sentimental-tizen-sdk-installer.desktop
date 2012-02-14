@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=Sentimental Tizen SDK Installer
+Name[ko]=감성적 Tizen SDK 설치 프로그램
+Comment=Sentimental Tizen SDK Installer is Unofficial SDK installer for Tizen by MeeGo fan
+Comment[ko]=어느 미고팬이 만든 감성 넘치는 비공식 Tizen SDK 설치 프로그램
+Icon=tizen-sdk-installmanager
+Exec=sentimental-tizen-sdk-installer --with-meego
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Tizen SDK;Development;

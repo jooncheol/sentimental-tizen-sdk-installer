@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/install_manager_graphicmotif_001.png</file>
+        <file>images/install_manager_graphicmotif_002.png</file>
+        <file>images/install_manager_graphicmotif_003.png</file>
+        <file>images/install_manager_graphicmotif_004.png</file>
+        <file>images/uninstaller_graphicmotif_001.png</file>
+        <file>images/uninstaller_graphicmotif_002.png</file>
+        <file>images/uninstaller_graphicmotif_003.png</file>
+        <file>etc/COPYING</file>
+        <file>images/tizen-sdk-installmanager.png</file>
+        <file>etc/makeshortcut.sh</file>
+        <file>etc/removeshortcut.sh</file>
+        <file>images/meego.png</file>
+        <file>images/wordballoon.png</file>
+        <file>translations/i18n_ko_KR.qm</file>
+        <file>dependencies/common.pkgs</file>
+        <file>dependencies/ubuntu.pkgs</file>
+    </qresource>
+</RCC>

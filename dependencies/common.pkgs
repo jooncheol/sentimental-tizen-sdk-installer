@@ -1,0 +1,11 @@
+qemu-kvm
+binutils-multiarch
+debhelper
+fakeroot
+realpath
+procps
+libsdl-gfx1.2-4
+gettext
+liblua5.1-0
+libdbus-1-3
+libcurl3
