@@ -1370,13 +1370,12 @@ void InstallingPage::slotPKSignalErrorCode(const QString &code, const QString &d
 }
 void InstallingPage::slotPKSignalFinished(const QString &exit, uint runtime)
 {
+#ifdef Q_OS_LINUX
+    qDebug() << "finished" << exit << runtime;
     PKTransaction *pkTransactionProxy = ((InstallWizard*)wizard())->pkTransactionProxy();
     disconnect(pkTransactionProxy, SIGNAL(Finished(const QString&,uint)),
             this, SLOT(slotPKSignalFinished(const QString,uint)));
     QTimer::singleShot(0, this, SLOT(slotStartDownload()));
-
-#ifdef Q_OS_LINUX
-    qDebug() << "finished" << exit << runtime;
     addLog(tr("PackageKit finished - %1").arg(exit));
 #endif
 }
