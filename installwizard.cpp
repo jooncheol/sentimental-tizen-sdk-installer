@@ -199,9 +199,12 @@ PKTransaction* InstallWizard::newPKTransaction(bool verbose)
                              QDBusConnection::systemBus());
         } while(!mPKProxy->isValid() && retry--);
 
-        if(!mPKProxy->isValid() && verbose)
-            QMessageBox::warning(this, tr("Error"),
+        if(!mPKProxy->isValid()) {
+            if(verbose)
+                QMessageBox::warning(this, tr("Error"),
                              tr("Could not connect to PackageKit"));
+            return NULL;
+        }
 
         connect(mPKProxy, SIGNAL(destroyed()), this, SLOT(slotPKDestroyed()));
     }
@@ -924,7 +927,7 @@ void InstallConfigurePage::slotPKInitTransaction()
 {
 #ifdef Q_OS_LINUX
     PKTransaction *pkTransactionProxy = NULL;
-    if(!(pkTransactionProxy = ((InstallWizard*)wizard())->newPKTransaction(true))) {
+    if(!(pkTransactionProxy = ((InstallWizard*)wizard())->newPKTransaction(false))) {
         emit completeChanged();
         return;
     }
