@@ -28,6 +28,7 @@
 #include <QTimer>
 #include <QDesktopServices>
 #include <QDir>
+#include <QLocale>
 
 Balloon::Balloon(int w, int h, QWidget *parent) :
     QWidget(parent)
@@ -77,10 +78,12 @@ MeeGo::MeeGo(int w, int h, QWidget *parent) :
     mMonologs << tr("Do you know Mer project?\nVisit to http://merproject.org/");
     mMonologs << tr("Do you know?\nThis is Qt powered program.\nQt is very good cross platform application/UI framework.\nVisit to http://qt.nokia.com/");
     mMonologs << tr("Why the official Tizen SDK installer is implemented by using Java ?");
-    //mMonologs << tr("You can find the trace of installed Tizen SDK files under %1\nBut Do not edit any files in there!")
-    //             .arg(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator());
     mMonologs << tr("You can find the trace of installed Tizen SDK files under %1\nBut Do not edit any files in there!")
+#ifdef Q_OS_LINUX
                  .arg(QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()+".TizenSDK");
+#else
+                 .arg(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator());
+#endif
     mMonologs << tr("Do you have any questions about this Tizen SDK Installer? See the source code: http://gitorious.org/tizen-toys/");
     mMonologs << tr("I miss Moblin, Maemo, Qt, Gtk, Clutter, Maliit ... and many other Open source projects what I used ...");
     mMonologs << tr("I cannot understand why Tizen doesn't use the oFono ... Hmm ...");
@@ -88,15 +91,14 @@ MeeGo::MeeGo(int w, int h, QWidget *parent) :
     mMonologs << tr("Do you want make more friends? Launch the X-Chat2, connect to FreeNode and join the #tizen channel.");
     mMonologs << tr("Tizen SDK's package index file looks very weird. It is similar to the Debian package index format. But it's little bit different.\n~(~.~)~");
     mMonologs << tr("I think that Samsung friends probably will change their weird first Tizen SDK installer. Unfortunately, U may can use this sentimental installer until that time.");
-    mMonologs << tr("SNSD, Tiara, Kara ... and IU. Yeah !!!");
     mMonologs << tr("GObject Introspection and Gtk+ 3 Broadway backend looks very awesome!");
     mMonologs << tr("Do you want make your own MeeGo avatar? Visit to http://appupavatar.com/ .");
-    mMonologs << tr("Do you find any problem of this Sentimental Tizen SDK Installer? Do not ask me anything... Fix it by yourself and Send me your patch. :-)");
+    mMonologs << tr("Did you find a problem of this Sentimental Tizen SDK Installer? Do not ask me anything... Fix it by yourself and Send me your patch. :-)");
     mMonologs << tr("Which editor do you prefer... Vim? Emacs?");
     mMonologs << tr("If you are digging on Ubuntu. You should install qemu-kvm binutils-multiarch debhelper fakeroot realpath procps libsdl-gfx1.2-4 gettext liblua5.1-0 libdbus-1-3 libcurl3.");
-    //mMonologs << tr("Sentimental Tizen SDK Installer follows XDG base directory specification, Configuration files by this installer will be saved on $XDG_DATA_HOME ($HOME/.local/share).");
-    mMonologs << tr("Sentimental Tizen SDK Installer wanted to follows XDG base directory specification, But Official installer doesn't follow it...");
     mMonologs << tr("Do you want to see the Tizen's emulator code? Read carefully the license agreement...");
+    if(QLocale::system().name()=="ko_KR")
+        mMonologs << tr("SNSD, Tiara, Kara ... and IU. Yeah !!!");
     mMonologs << tr("I'll always be with you ...\nGood bye TT"); // XXX LAST MONOLOG
     mTimer = new QTimer(this);
     connect(mTimer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
