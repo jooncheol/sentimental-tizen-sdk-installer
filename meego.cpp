@@ -73,7 +73,7 @@ MeeGo::MeeGo(int w, int h, QWidget *parent) :
     mBalloon->hide();
     mFirstMonolog = true;
     mLastMessage = false;
-    mMonologs << tr("I'm MeeGo...\nPlease don't foget me ..."); // XXX FIRST MONOLOG
+    mMonologs << tr("I'm MeeGo...\nPlease don't forget me ..."); // XXX FIRST MONOLOG
     mMonologs << tr("You better do not use this home brew Tizen SDK Installer ... This is not an official and still under brewing.");
     mMonologs << tr("Do you know Mer project?\nVisit to http://merproject.org/");
     mMonologs << tr("Do you know?\nThis is Qt powered program.\nQt is very good cross platform application/UI framework.\nVisit to http://qt.nokia.com/");
@@ -97,8 +97,11 @@ MeeGo::MeeGo(int w, int h, QWidget *parent) :
     mMonologs << tr("Which editor do you prefer... Vim? Emacs?");
     mMonologs << tr("If you are digging on Ubuntu. You should install qemu-kvm binutils-multiarch debhelper fakeroot realpath procps libsdl-gfx1.2-4 gettext liblua5.1-0 libdbus-1-3 libcurl3.");
     mMonologs << tr("Do you want to see the Tizen's emulator code? Read carefully the license agreement...");
-    if(QLocale::system().name()=="ko_KR")
+    // add monolog for your local area
+    if(QLocale::system().name()=="ko_KR") {
+        // SNSD, Tiara, Kara, IU are lovely idol singer groups in Korea :-)
         mMonologs << tr("SNSD, Tiara, Kara ... and IU. Yeah !!!");
+    }
     mMonologs << tr("I'll always be with you ...\nGood bye TT"); // XXX LAST MONOLOG
     mTimer = new QTimer(this);
     connect(mTimer, SIGNAL(timeout()), this, SLOT(slotTimeout()));

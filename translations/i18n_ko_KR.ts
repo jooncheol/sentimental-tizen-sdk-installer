@@ -497,14 +497,6 @@
         <translation>나를 눌러줘!</translation>
     </message>
     <message>
-        <location filename="../meego.cpp" line="76"/>
-        <source>I&apos;m MeeGo...
-Please don&apos;t foget me ...</source>
-        <oldsource>I&apos;m MeeGo.
-Please don&apos;t foget me ...</oldsource>
-        <translation>나는 미고... 나를 잊지 말아줘...</translation>
-    </message>
-    <message>
         <location filename="../meego.cpp" line="77"/>
         <source>You better do not use this home brew Tizen SDK Installer ... This is not an official and still under brewing.</source>
         <translation>이 싸제 Tizen SDK 설치 프로그램을 쓰지 안는게 좋을꺼야 ... 이건 싸제고 아직 완성되지 않은듯 해.</translation>
@@ -577,7 +569,7 @@ Use the D-Bus, Luke!</source>
         <translation>삼성 친구들은 아마 그들의 이상한 Tizen SDK 설치 프로그램을 바꿀듯 싶어. 불행하게도 당신은 이 감성 충만한 인스톨러를 그때까지만 사용할수 있어.</translation>
     </message>
     <message>
-        <location filename="../meego.cpp" line="101"/>
+        <location filename="../meego.cpp" line="103"/>
         <source>SNSD, Tiara, Kara ... and IU. Yeah !!!</source>
         <translation>소녀시대, 티아라, 카라 ... 아이유 짜응!!!</translation>
     </message>
@@ -585,6 +577,12 @@ Use the D-Bus, Luke!</source>
         <location filename="../meego.cpp" line="94"/>
         <source>GObject Introspection and Gtk+ 3 Broadway backend looks very awesome!</source>
         <translation>GObject Introspection과 Gtk+ 3 브로드웨이 백엔드는 꽤 멋져 보이는군!</translation>
+    </message>
+    <message>
+        <location filename="../meego.cpp" line="76"/>
+        <source>I&apos;m MeeGo...
+Please don&apos;t forget me ...</source>
+        <translation>나는 미고... 나를 잊지 말아줘...</translation>
     </message>
     <message>
         <location filename="../meego.cpp" line="95"/>
@@ -612,7 +610,7 @@ Use the D-Bus, Luke!</source>
         <translation>Tizen 에뮬레이터 코드를 보고 싶어요? 약관을 잘 읽어 보세요...</translation>
     </message>
     <message>
-        <location filename="../meego.cpp" line="102"/>
+        <location filename="../meego.cpp" line="105"/>
         <source>I&apos;ll always be with you ...
 Good bye TT</source>
         <translation>항상 네 곁에 있을께...
