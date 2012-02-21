@@ -156,6 +156,9 @@ private slots:
     void slotDownloadProgress(qint64, qint64);
     void slotDownloadFinished();
     void slotDownloadError(QNetworkReply::NetworkError);
+#ifndef QT_NO_OPENSSL
+    void slotDownloadSSLError(QNetworkReply *, const QList<QSslError>&);
+#endif
     void slotError(QProcess::ProcessError);
     void slotStandardOutput();
     void slotStandardError();

@@ -47,6 +47,8 @@
 #include <QNetworkRequest>
 #include <QUrl>
 #include <QNetworkReply>
+#include <QSslError>
+#include <QSslConfiguration>
 #include <QTreeView>
 #include <QMessageBox>
 #include <QHeaderView>
@@ -385,6 +387,9 @@ void BasePage::setupNetworkAccessManager()
                     field("tizeninstaller.network.proxy-user").toString().trimmed(),
                     field("tizeninstaller.network.proxy-passwd").toString().trimmed());
     mAccessManager->setProxy(networkProxy);
+#ifndef QT_NO_OPENSSL
+    connect(mAccessManager, SIGNAL(sslErrors(QNetworkReply*, QList<QSslError>)), SLOT(slotDownloadSSLError(QNetworkReply*, QList<QSslError>)));
+#endif
 }
 void BasePage::cancelDownload()
 {
@@ -405,6 +410,11 @@ void BasePage::downloadText(const QUrl &url)
         delete mCurrentReply;
     }
     QNetworkRequest request(url);
+#ifndef QT_NO_OPENSSL
+    QSslConfiguration config = request.sslConfiguration();
+    config.setProtocol(QSsl::TlsV1);
+    request.setSslConfiguration(config);
+#endif
     mCurrentReply = mAccessManager->get(request);
     connect(mCurrentReply, SIGNAL(readyRead()), SLOT(slotDownloadReadyRead()));
     connect(mCurrentReply, SIGNAL(downloadProgress(qint64,qint64)), SLOT(slotDownloadProgress(qint64,qint64)));
@@ -429,6 +439,11 @@ void BasePage::downloadData(const QUrl &url, const QDir &savedir)
     }
     mHash->reset();
     QNetworkRequest request(url);
+#ifndef QT_NO_OPENSSL
+    QSslConfiguration config = request.sslConfiguration();
+    config.setProtocol(QSsl::TlsV1);
+    request.setSslConfiguration(config);
+#endif
     mCurrentReply = mAccessManager->get(request);
     connect(mCurrentReply, SIGNAL(readyRead()), SLOT(slotDownloadReadyRead()));
     connect(mCurrentReply, SIGNAL(downloadProgress(qint64,qint64)), SLOT(slotDownloadProgress(qint64,qint64)));
@@ -456,6 +471,24 @@ void BasePage::slotDownloadError(QNetworkReply::NetworkError errorCode)
     qDebug() << "error" << errorCode << mCurrentReply->errorString();
     downloadError(mCurrentReply->errorString());
 }
+#ifndef QT_NO_OPENSSL
+static bool ignoreSslErrors = false;
+void BasePage::slotDownloadSSLError(QNetworkReply *reply, const QList<QSslError> &errors)
+{
+    QString errorString;
+    foreach (const QSslError &error, errors) {
+        if (!errorString.isEmpty())
+            errorString += ", ";
+        errorString += error.errorString();
+    }
+    if (ignoreSslErrors || QMessageBox::warning(this, tr("HTTP"),
+            tr("One or more SSL errors has occurred: %1").arg(errorString),
+            QMessageBox::Ignore | QMessageBox::Abort) == QMessageBox::Ignore) {
+        reply->ignoreSslErrors();
+        ignoreSslErrors = true;
+    }
+}
+#endif
 void BasePage::slotDownloadFinished()
 {
     if(mSaveMode) {
@@ -1302,7 +1335,7 @@ void InstallingPage::slotPKSignalChanged()
     PKTransaction *pkTransactionProxy = ((InstallWizard*)wizard())->pkTransactionProxy();
     QString status = pkTransactionProxy->property("Status").toString();
     int remainTime = pkTransactionProxy->property("RemainingTime").toInt();
-    int Time = pkTransactionProxy->property("RemainingTime").toInt();
+    //int Time = pkTransactionProxy->property("RemainingTime").toInt();
     int percentage = pkTransactionProxy->property("Percentage").toInt();
     int subPercentage = pkTransactionProxy->property("Subpercentage").toInt();
     qint64 speed = pkTransactionProxy->property("Speed").toInt();
@@ -1482,9 +1515,11 @@ void InstallingPage::slotDisplayDownloadSpeed()
 
     setDownloadSpeed(receivedPerSecond);
 
-    qint64 remainPackageSize = (qint64)mCurrentPackage->size() - mDownloadedBytes;
-    int remainSec = remainPackageSize / receivedPerSecond;
-    setRemainTime(remainSec);
+    if(receivedPerSecond > 0) {
+        qint64 remainPackageSize = (qint64)mCurrentPackage->size() - mDownloadedBytes;
+        int remainSec = remainPackageSize / receivedPerSecond;
+        setRemainTime(remainSec);
+    }
 
     mDownloadedBytesLast = mDownloadedBytes;
 }

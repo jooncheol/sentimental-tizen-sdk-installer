@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     translator.load(QString(":/translations/i18n_%1.qm").arg(QLocale::system().name()));
     a.installTranslator(&translator);
 
-    const char *defaultURL = "http://112.106.1.254/tizensdkpackages/current/linux-packages/Packages.list";
+    const char *defaultURL = "https://souce.tizen.org/tizensdkpackages/current/linux-packages/Packages.list";
     QString packageIndexURL(defaultURL);
     bool withMeeGo = false;
 #ifdef Q_OS_LINUX
