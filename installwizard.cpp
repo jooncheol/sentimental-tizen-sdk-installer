@@ -929,12 +929,18 @@ void InstallConfigurePage::downloadError(const QString &errorStr)
 }
 void InstallConfigurePage::downloadFinished(const QNetworkReply *reply, const QByteArray &data)
 {
-    if(200!=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()) {
+    QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    if(reply->error()) {
         if(QMessageBox::No == QMessageBox::warning(this, tr("Download failed"),
             tr("Failed to retrieve the package index file from repository server. Retry?"),
             QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
             return;
         downloadText(((InstallWizard*)wizard())->packageListURL());
+        return;
+    } else if(!redirectionTarget.isNull()) {
+        QUrl newUrl = redirectionTarget.toUrl();
+        ((InstallWizard*)wizard())->setPackageListURL(newUrl);
+        downloadText(newUrl);
         return;
     }
     qDebug() << data;
@@ -1447,7 +1453,8 @@ void InstallingPage::slotUpdateDownloadStatus()
 void InstallingPage::downloadFinished(const QNetworkReply *reply)
 {
     int httpstatus = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if(200!=httpstatus) {
+    QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    if(reply->error()) {
         addLogIntoFile(QString("Download Fail: http code(%1)").arg(httpstatus));
         if(QMessageBox::No == QMessageBox::warning(this, tr("Download failed"),
             tr("Failed to retrieve package %1 from repository server. Retry?").arg(mCurrentPackage->name()),
@@ -1455,6 +1462,10 @@ void InstallingPage::downloadFinished(const QNetworkReply *reply)
             return;
         downloadData(reply->url(), mCacheDir);
         addLogIntoFile("Retry download "+reply->url().toString());
+        return;
+    } else if(!redirectionTarget.isNull()) {
+        QUrl newUrl = redirectionTarget.toUrl();
+        downloadData(newUrl, mCacheDir);
         return;
     }
 
@@ -1862,12 +1873,17 @@ void InstallCompletePage::downloadError(const QString &errorStr)
 }
 void InstallCompletePage::downloadFinished(const QNetworkReply *reply, const QByteArray &data)
 {
-    if(200!=reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()) {
+    QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    if(reply->error()) {
         if(QMessageBox::No == QMessageBox::warning(this, tr("Download failed"),
             tr("Failed to retrieve release note from repository server. Retry?"),
             QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
             return;
         downloadText(mReleaseNoteURL);
+        return;
+    } else if(!redirectionTarget.isNull()) {
+        QUrl newUrl = redirectionTarget.toUrl();
+        downloadText(newUrl);
         return;
     }
     mShowChangeLog->setChecked(true);
