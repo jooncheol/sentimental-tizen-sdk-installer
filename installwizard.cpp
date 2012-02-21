@@ -876,6 +876,8 @@ bool InstallConfigurePage::isComplete() const
         for(int i=0; i<mModel->rowCount(); i++) {
             QStandardItem *item = mModel->item(i);
             TizenPackage *package = ((InstallWizard*)wizard())->packageIndex()->find(item->text());
+            if(!package)
+                continue;
             if(item->checkState()==Qt::Checked &&
                    (package->status()==TizenPackage::NewPackage
                 ||  package->status()==TizenPackage::UpgradePackage)) {
