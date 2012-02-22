@@ -2,7 +2,7 @@
 import os, sys
 
 # package index url
-pi_url='https://112.106.1.254/tizensdkpackages/current/linux-packages/Packages.list'
+pi_url='https://source.tizen.org/tizensdkpackages/current/linux-packages/Packages.list'
 target_dir = '.'
 
 if __name__=='__main__':
