@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+import os
+# package index url
+pi_url="https://112.106.1.254/tizensdkpackages/current/linux-packages/Packages.list"
+pkg_index = os.popen("curl -s --insecure "+pi_url).read()
+for x in pkg_index.split('\n'):
+	if not x.startswith("Path:"):
+		continue
+	key, value = x.split(":")
+	filename = os.path.basename(value.strip())
+	pkg_url = pi_url.replace(pi_url.split("/")[-1], filename)
+	print
+	print 'Download: '+pkg_url
+	#os.system("curl --insecure -o "+filename+" "+pkg_url)
