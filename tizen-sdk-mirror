@@ -1,14 +1,51 @@
 #!/usr/bin/env python
-import os
+import os, sys
+
 # package index url
-pi_url="https://112.106.1.254/tizensdkpackages/current/linux-packages/Packages.list"
-pkg_index = os.popen("curl -s --insecure "+pi_url).read()
-for x in pkg_index.split('\n'):
-	if not x.startswith("Path:"):
-		continue
-	key, value = x.split(":")
-	filename = os.path.basename(value.strip())
-	pkg_url = pi_url.replace(pi_url.split("/")[-1], filename)
-	print
-	print 'Download: '+pkg_url
-	#os.system("curl --insecure -o "+filename+" "+pkg_url)
+pi_url='https://112.106.1.254/tizensdkpackages/current/linux-packages/Packages.list'
+target_dir = '.'
+
+if __name__=='__main__':
+    if len(sys.argv)==1:
+        print "Usage:"
+        print "  %s directory [package index url]" % sys.argv[0]
+        print 
+        print "default package index url is:"
+        print "  "+pi_url
+        sys.exit(1)
+    else:
+        target_dir = sys.argv[1]
+        if not os.path.exists(target_dir):
+            print '%s is not exists' % target_dir
+            sys.exit(1)
+        target_dir = os.path.abspath(target_dir)
+        if len(sys.argv)>2:
+            pi_url = sys.argv[2]
+
+    pkg_index = os.popen("curl -s --insecure "+pi_url).read()
+    download_queue = []
+    for x in pkg_index.split('\n'):
+        if not x.startswith("Path:"):
+            continue
+        key, value = x.split(":")
+        filename = os.path.basename(value.strip())
+        pkg_url = pi_url.replace(pi_url.split("/")[-1], filename)
+        download_queue.append((pkg_url, filename))
+    count = 0
+    for pkg_url, filename in download_queue:
+        print
+        print '[%d/%d] Downloading %s into %s' % \
+                (count+1, len(download_queue), pkg_url, target_dir)
+        cmd = "curl --insecure -o "+target_dir+os.path.sep+filename+" "+pkg_url
+        if 0 != os.system(cmd):
+            print 'interrupted'
+            break
+        count += 1
+        print 'Done'
+    else:
+        if count == 0:
+            print 'Could not download package index from %s' % pi_url
+            sys.exit(1)
+    print '%d/%d packages downloaded' % (count, len(download_queue))
+
+# vim: sw=4 ts=8 sts=4 et bs=2 fdm=marker fileencoding=utf8 
