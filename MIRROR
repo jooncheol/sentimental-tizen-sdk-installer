@@ -1,0 +1,11 @@
+How to make mirror site for Tizen SDK
+
+1. Mirroring
+ $ mkdir /document-root-of-webserver/tizen-mirror
+ (if you are using ubuntu, default document root is /var/www)
+
+ $ ./tizen-sdk-mirror /document-root-of-webserver/tizen-mirror
+
+
+2. Using mirror site for sentimental-tizen-sdk-installer
+ $ ./sentimental-tizen-sdk-installer http://your-host/tizen-mirror/Packages.list
