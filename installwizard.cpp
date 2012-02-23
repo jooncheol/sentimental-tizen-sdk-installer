@@ -481,7 +481,7 @@ void BasePage::slotDownloadSSLError(QNetworkReply *reply, const QList<QSslError>
             errorString += ", ";
         errorString += error.errorString();
     }
-    if (ignoreSslErrors || QMessageBox::warning(this, tr("HTTP"),
+    if (ignoreSslErrors || QMessageBox::warning(this, tr("SSL warnings"),
             tr("One or more SSL errors has occurred: %1").arg(errorString),
             QMessageBox::Ignore | QMessageBox::Abort) == QMessageBox::Ignore) {
         reply->ignoreSslErrors();

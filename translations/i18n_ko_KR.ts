@@ -12,33 +12,43 @@
 <context>
     <name>BasePage</name>
     <message>
-        <location filename="../installwizard.cpp" line="315"/>
         <location filename="../installwizard.cpp" line="317"/>
+        <location filename="../installwizard.cpp" line="319"/>
         <source>Name</source>
         <translation>이름</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="318"/>
+        <location filename="../installwizard.cpp" line="320"/>
         <source>Version</source>
         <translation>버전</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="319"/>
+        <location filename="../installwizard.cpp" line="321"/>
         <source>Status</source>
         <translation>상태</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="320"/>
+        <location filename="../installwizard.cpp" line="322"/>
         <source>Size</source>
         <translation>크기</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="515"/>
+        <location filename="../installwizard.cpp" line="484"/>
+        <source>SSL warnings</source>
+        <translation>SSL 경고</translation>
+    </message>
+    <message>
+        <location filename="../installwizard.cpp" line="485"/>
+        <source>One or more SSL errors has occurred: %1</source>
+        <translation>하나 또는 여러개의 SSL 에러가 발생됨: %1</translation>
+    </message>
+    <message>
+        <location filename="../installwizard.cpp" line="548"/>
         <source>Error</source>
         <translation>에러</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="515"/>
+        <location filename="../installwizard.cpp" line="548"/>
         <source>Could not create the target directory: %1</source>
         <translation>설치할 디렉토리를 생성할 수 없었습니다: %1</translation>
     </message>
@@ -46,37 +56,37 @@
 <context>
     <name>InstallCompletePage</name>
     <message>
-        <location filename="../installwizard.cpp" line="1783"/>
+        <location filename="../installwizard.cpp" line="1831"/>
         <source>Installation Completed</source>
         <translation>설치 완료</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1789"/>
+        <location filename="../installwizard.cpp" line="1837"/>
         <source>Thank you for installing Tizen SDK</source>
         <translation>Tizen SDK를 설치해 주셔서 감사합니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1790"/>
+        <location filename="../installwizard.cpp" line="1838"/>
         <source>To use the SDK program, Open the Application menu, find the Tizen SDK folder, and click the program icon.</source>
         <translation>SDK 프로그램을 사용하려면 어플리케이션 메뉴를 열고 Tizen SDK 폴더를 찾아서 프로그램 아이콘을 클릭하세요.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1793"/>
+        <location filename="../installwizard.cpp" line="1841"/>
         <source>Show release note.</source>
         <translation>릴리스 노트 보기.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1797"/>
+        <location filename="../installwizard.cpp" line="1845"/>
         <source>Show install log.</source>
         <translation>인스톨 로그 보기.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1829"/>
+        <location filename="../installwizard.cpp" line="1878"/>
         <source>Download failed</source>
         <translation>다운로드 실패</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1830"/>
+        <location filename="../installwizard.cpp" line="1879"/>
         <source>Failed to retrieve release note from repository server. Retry?</source>
         <translation>저장소로 부터 릴리스 노트를 가져오는데 실패 하였습니다. 재시도 하겠습니까?</translation>
     </message>
@@ -88,53 +98,53 @@
 <context>
     <name>InstallConfigurePage</name>
     <message>
-        <location filename="../installwizard.cpp" line="813"/>
+        <location filename="../installwizard.cpp" line="846"/>
         <source>Installation Packages</source>
         <translation>설치 패키지</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="816"/>
+        <location filename="../installwizard.cpp" line="849"/>
         <source>Customize the items that you wish to install.</source>
         <translation>설치하고 싶은 항목을 조정하세요.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="893"/>
+        <location filename="../installwizard.cpp" line="928"/>
         <source>Network error</source>
         <translation>네트워크 오류</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="898"/>
+        <location filename="../installwizard.cpp" line="934"/>
         <source>Download failed</source>
         <translation>다운로드 실패</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="899"/>
+        <location filename="../installwizard.cpp" line="935"/>
         <source>Failed to retrieve the package index file from repository server. Retry?</source>
         <oldsource>Failed to package index file from repository server. Retry?</oldsource>
         <translation>패키지 인덱스 파일을 저장소로 부터 가져오는데 실패하였습니다. 재시도 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="908"/>
+        <location filename="../installwizard.cpp" line="949"/>
         <source>Warnings</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="909"/>
+        <location filename="../installwizard.cpp" line="950"/>
         <source>Failed to parse the package index file from repository server.</source>
         <translation>저장소의 패키지 인덱스 파일을 분석하는데 실패 하였습니다.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="958"/>
+        <location filename="../installwizard.cpp" line="999"/>
         <source>%1 package dependencies</source>
         <translation>%1용 의존 패키지</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="962"/>
+        <location filename="../installwizard.cpp" line="1003"/>
         <source>The %1 packages for Tizen SDK</source>
         <translation>Tizen SDK를 위한 %1 패키지</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1047"/>
+        <location filename="../installwizard.cpp" line="1088"/>
         <source>Unknown</source>
         <translation>모름</translation>
     </message>
@@ -155,17 +165,17 @@
         <translation type="obsolete">PackageKit 트랜잭션을 생성할 수 없었습니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1026"/>
+        <location filename="../installwizard.cpp" line="1067"/>
         <source>Upgrade</source>
         <translation>업그레이드</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1044"/>
+        <location filename="../installwizard.cpp" line="1085"/>
         <source>Installed</source>
         <translation>설치됨</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1046"/>
+        <location filename="../installwizard.cpp" line="1087"/>
         <source>New</source>
         <translation>신규</translation>
     </message>
@@ -173,33 +183,33 @@
 <context>
     <name>InstallConfigurePageLocation</name>
     <message>
-        <location filename="../installwizard.cpp" line="1124"/>
+        <location filename="../installwizard.cpp" line="1165"/>
         <source>Location</source>
         <translation>위치</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1128"/>
+        <location filename="../installwizard.cpp" line="1169"/>
         <source>Choose a location where you want to install.</source>
         <translation>설치하고 싶은 위치를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1161"/>
+        <location filename="../installwizard.cpp" line="1202"/>
         <source>Space required: %1</source>
         <translation>필요한 공간: %1</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1172"/>
-        <location filename="../installwizard.cpp" line="1177"/>
+        <location filename="../installwizard.cpp" line="1213"/>
+        <location filename="../installwizard.cpp" line="1218"/>
         <source>Space available: %1</source>
         <translation>가능한 공간: %1</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1180"/>
+        <location filename="../installwizard.cpp" line="1221"/>
         <source>Install SDK</source>
         <translation>SDK 설치</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1190"/>
+        <location filename="../installwizard.cpp" line="1231"/>
         <source>Select a directory</source>
         <translation>디렉토리를 선택하세요</translation>
     </message>
@@ -207,47 +217,47 @@
 <context>
     <name>InstallConfigurePageNetwork</name>
     <message>
-        <location filename="../installwizard.cpp" line="715"/>
+        <location filename="../installwizard.cpp" line="748"/>
         <source>Connection Settings</source>
         <translation>연결 설정</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="719"/>
+        <location filename="../installwizard.cpp" line="752"/>
         <source>Configure how SDK installer connects to Internet</source>
         <translation>SDK 설치프로그램이 인터넷에 접속하는 방법을 설정합니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="723"/>
+        <location filename="../installwizard.cpp" line="756"/>
         <source>No proxy</source>
         <translation>프록시 없음</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="724"/>
+        <location filename="../installwizard.cpp" line="757"/>
         <source>HTTP Proxy</source>
         <translation>HTTP 프록시</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="725"/>
+        <location filename="../installwizard.cpp" line="758"/>
         <source>Socks5 Proxy</source>
         <translation>Socks5 프록시</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="729"/>
+        <location filename="../installwizard.cpp" line="762"/>
         <source>Host:</source>
         <translation>호스트:</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="737"/>
+        <location filename="../installwizard.cpp" line="770"/>
         <source>Authentication (Optional)</source>
         <translation>인증 (옵션)</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="738"/>
+        <location filename="../installwizard.cpp" line="771"/>
         <source>Username:</source>
         <translation>사용자명:</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="740"/>
+        <location filename="../installwizard.cpp" line="773"/>
         <source>Password:</source>
         <translation>비밀번호:</translation>
     </message>
@@ -255,17 +265,17 @@
 <context>
     <name>InstallLicensePage</name>
     <message>
-        <location filename="../installwizard.cpp" line="686"/>
+        <location filename="../installwizard.cpp" line="719"/>
         <source>License Agreement</source>
         <translation>라이센스 동의</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="689"/>
+        <location filename="../installwizard.cpp" line="722"/>
         <source>To continue you must accept the terms of this agreement.</source>
         <translation>계속하려면 약관에 반드시 약관에 동의해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="702"/>
+        <location filename="../installwizard.cpp" line="735"/>
         <source>I accept the terms of this agreement.</source>
         <translation>나는 이 약관에 동의 합니다.</translation>
     </message>
@@ -273,50 +283,50 @@
 <context>
     <name>InstallWizard</name>
     <message>
-        <location filename="../installwizard.cpp" line="83"/>
+        <location filename="../installwizard.cpp" line="85"/>
         <source>Sentimental Tizen SDK Installer</source>
         <translation>감수성 풍부한 Tizen SDK 인스톨러</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="85"/>
+        <location filename="../installwizard.cpp" line="87"/>
         <source>Tizen SDK Installer</source>
         <translation>Tizen SDK 설치 프로그램</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="132"/>
+        <location filename="../installwizard.cpp" line="134"/>
         <source>Warnings</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="133"/>
+        <location filename="../installwizard.cpp" line="135"/>
         <source>Failed to parse installed package index file: %s</source>
         <translation>패키지 인덱스 파일을 분석하는데 실패하였습니다: %s</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="188"/>
-        <location filename="../installwizard.cpp" line="204"/>
-        <location filename="../installwizard.cpp" line="231"/>
-        <location filename="../installwizard.cpp" line="244"/>
+        <location filename="../installwizard.cpp" line="190"/>
+        <location filename="../installwizard.cpp" line="206"/>
+        <location filename="../installwizard.cpp" line="233"/>
+        <location filename="../installwizard.cpp" line="246"/>
         <source>Error</source>
         <translation>에러</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="189"/>
+        <location filename="../installwizard.cpp" line="191"/>
         <source>Could not connect to DBus system bus</source>
         <translation>DBus 시스템 버스에 연결할 수 없었습니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="205"/>
+        <location filename="../installwizard.cpp" line="207"/>
         <source>Could not connect to PackageKit</source>
         <translation>PackageKit 에 연결 할 수 없었습니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="232"/>
+        <location filename="../installwizard.cpp" line="234"/>
         <source>Could not get transaction id from PackageKit</source>
         <translation>PackageKit으로 부터 트랜잭션 아이디를 얻을 수 없었습니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="245"/>
+        <location filename="../installwizard.cpp" line="247"/>
         <source>Could not create to PackageKit Transaction</source>
         <translation>PackageKit 트랜잭션을 생성할 수 없었습니다</translation>
     </message>
@@ -324,144 +334,144 @@
 <context>
     <name>InstallingPage</name>
     <message>
-        <location filename="../installwizard.cpp" line="1197"/>
+        <location filename="../installwizard.cpp" line="1238"/>
         <source>Installation Progress</source>
         <translation>설치 과정</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1200"/>
+        <location filename="../installwizard.cpp" line="1241"/>
         <source>Please wait while the Tizen SDK installation is being processed</source>
         <translation>Tizen SDK 설치가 진행되는 동안 잠시 기다려 주세요</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1204"/>
+        <location filename="../installwizard.cpp" line="1245"/>
         <source>Preparing ...</source>
         <translation>준비 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1288"/>
+        <location filename="../installwizard.cpp" line="1329"/>
         <source>Preparing download cache directroy: %1</source>
         <translation>내려받기 캐쉬 디렉토리를 준비합니다: %1</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1289"/>
+        <location filename="../installwizard.cpp" line="1330"/>
         <source>Download !</source>
         <translation>내려받기!</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1332"/>
+        <location filename="../installwizard.cpp" line="1373"/>
         <source>repository</source>
         <translation>저장소</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1337"/>
+        <location filename="../installwizard.cpp" line="1378"/>
         <source>PackageKit: %1 %2 %3</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1343"/>
+        <location filename="../installwizard.cpp" line="1384"/>
         <source>Downloading to %1 %2 from %3</source>
         <translation>%3에서 %1 %2를 다운로드하는 중</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1345"/>
+        <location filename="../installwizard.cpp" line="1386"/>
         <source>Installing to %1 %2</source>
         <translation>%1 %2를 설치 중</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1347"/>
+        <location filename="../installwizard.cpp" line="1388"/>
         <source>Preparing to %1 %2</source>
         <translation>%1 %2를 준비 중</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1371"/>
+        <location filename="../installwizard.cpp" line="1412"/>
         <source>PackageKit Error(%1) - %2</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1382"/>
+        <location filename="../installwizard.cpp" line="1423"/>
         <source>PackageKit finished - %1</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1394"/>
+        <location filename="../installwizard.cpp" line="1435"/>
         <source>[%1/%2] Downloading %3 ...</source>
         <translation>[%1/%2] %3 내려받는 중 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1417"/>
+        <location filename="../installwizard.cpp" line="1459"/>
         <source>Download failed</source>
         <translation>다운로드 실패</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1418"/>
+        <location filename="../installwizard.cpp" line="1460"/>
         <source>Failed to retrieve package %1 from repository server. Retry?</source>
         <oldsource>Failed to package %1 from repository server. Retry?</oldsource>
         <translation>패키지 %1을 저장소 서버로 부터 받는데 실패하였습니다. 재시도 하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1429"/>
-        <location filename="../installwizard.cpp" line="1676"/>
-        <location filename="../installwizard.cpp" line="1704"/>
-        <location filename="../installwizard.cpp" line="1730"/>
-        <location filename="../installwizard.cpp" line="1745"/>
+        <location filename="../installwizard.cpp" line="1475"/>
+        <location filename="../installwizard.cpp" line="1724"/>
+        <location filename="../installwizard.cpp" line="1752"/>
+        <location filename="../installwizard.cpp" line="1778"/>
+        <location filename="../installwizard.cpp" line="1793"/>
         <source>Completed</source>
         <translation>완료</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1439"/>
+        <location filename="../installwizard.cpp" line="1485"/>
         <source>Extract !</source>
         <translation>풀기 !</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1466"/>
+        <location filename="../installwizard.cpp" line="1512"/>
         <source>Failure</source>
         <translation>실패</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1511"/>
-        <location filename="../installwizard.cpp" line="1514"/>
-        <location filename="../installwizard.cpp" line="1517"/>
+        <location filename="../installwizard.cpp" line="1559"/>
+        <location filename="../installwizard.cpp" line="1562"/>
+        <location filename="../installwizard.cpp" line="1565"/>
         <source>Remain time: </source>
         <translation>남은 시간:</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1524"/>
+        <location filename="../installwizard.cpp" line="1572"/>
         <source>[%1/%2] Extracting %3 ...</source>
         <translation>[%1/%2] %3 푸는 중 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1652"/>
+        <location filename="../installwizard.cpp" line="1700"/>
         <source>Saved installed file list into %1</source>
         <translation>%1로 설지된 파일 목록을 저장하였음</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1661"/>
+        <location filename="../installwizard.cpp" line="1709"/>
         <source>Executing install script : %1 ...</source>
         <translation>설치 스크립트 실행: %1 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1677"/>
+        <location filename="../installwizard.cpp" line="1725"/>
         <source>Total %1 package(s)</source>
         <translation>총 %1 패키지(들)</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1698"/>
+        <location filename="../installwizard.cpp" line="1746"/>
         <source>Failed to start install script: %1</source>
         <translation>설치 스크립트를 시작하는데 실패하였습니다: %1</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1706"/>
+        <location filename="../installwizard.cpp" line="1754"/>
         <source>Failed</source>
         <translation>실패</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1729"/>
+        <location filename="../installwizard.cpp" line="1777"/>
         <source>Saved config file: %1</source>
         <translation>설정 파일 저장: %1</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1744"/>
+        <location filename="../installwizard.cpp" line="1792"/>
         <source>Saved installed packages index: %1</source>
         <translation>설치된 패키지 인덱스 저장: %1</translation>
     </message>
@@ -469,22 +479,22 @@
 <context>
     <name>IntroPage</name>
     <message>
-        <location filename="../installwizard.cpp" line="653"/>
+        <location filename="../installwizard.cpp" line="686"/>
         <source>Welcome to Tizen SDK</source>
         <translation>환영합니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="655"/>
+        <location filename="../installwizard.cpp" line="688"/>
         <source>Tizen SDK will be installed on your computer. It is recommended that you close all other applications before starting installation.</source>
         <translation>Tizen SDK는 당신에 컴퓨터에 설치될 것입니다. 설치하기 전에 다른 프로그램을 모두 종료하는 것을 권장 합니다.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="659"/>
+        <location filename="../installwizard.cpp" line="692"/>
         <source>Install or Update Tizen SDK</source>
         <translation>Tizen SDK를 설치 또는 업데이트</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="661"/>
+        <location filename="../installwizard.cpp" line="694"/>
         <source>Remove Tizen SDK</source>
         <translation>Tizen SDK 삭제</translation>
     </message>
@@ -651,17 +661,17 @@ Good bye TT</source>
 <context>
     <name>UninstallCompletePage</name>
     <message>
-        <location filename="../installwizard.cpp" line="2226"/>
+        <location filename="../installwizard.cpp" line="2279"/>
         <source>Uninstallation completed</source>
         <translation>제거 완료</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2230"/>
+        <location filename="../installwizard.cpp" line="2283"/>
         <source>Thank you for using Tizen SDK</source>
         <translation>Tizen SDK를 사용해 주셔서 감사합니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2233"/>
+        <location filename="../installwizard.cpp" line="2286"/>
         <source>Show uninstall log.</source>
         <translation>삭제 로그 보기.</translation>
     </message>
@@ -669,17 +679,17 @@ Good bye TT</source>
 <context>
     <name>UninstallConfigurePage</name>
     <message>
-        <location filename="../installwizard.cpp" line="1867"/>
+        <location filename="../installwizard.cpp" line="1920"/>
         <source>Uninstallation Packages</source>
         <translation>패키지 제거하기</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1871"/>
+        <location filename="../installwizard.cpp" line="1924"/>
         <source>Select the items that you wish to uninstall.</source>
         <translation>제거하고픈 항목을 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1876"/>
+        <location filename="../installwizard.cpp" line="1929"/>
         <source>Do not remove SDK direcotry if user created files exists.</source>
         <translation>사용자에 의한 파일이 존재할 경우 SDK 디렉토리를 지우지 않습니다.</translation>
     </message>
@@ -687,102 +697,102 @@ Good bye TT</source>
 <context>
     <name>UninstallingPage</name>
     <message>
-        <location filename="../installwizard.cpp" line="1940"/>
+        <location filename="../installwizard.cpp" line="1993"/>
         <source>Uninstalling ...</source>
         <translation>제거 중 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1945"/>
+        <location filename="../installwizard.cpp" line="1998"/>
         <source>Preparing ...</source>
         <translation>준비 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1973"/>
+        <location filename="../installwizard.cpp" line="2026"/>
         <source>Preparing to uninstall ...</source>
         <translation>제거 준비 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1987"/>
+        <location filename="../installwizard.cpp" line="2040"/>
         <source>Could not load tizen sdk install path on your system</source>
         <translation>Tizen sdk 설치 경로를 불러올 수 없었습니다</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1990"/>
+        <location filename="../installwizard.cpp" line="2043"/>
         <source>Installed Tizen SDK path on your system: %1</source>
         <translation>설치된 Tizen SDK 경로: %1</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="1998"/>
+        <location filename="../installwizard.cpp" line="2051"/>
         <source>[%1/%2] Removing %3 ...</source>
         <translation>[%1/%2] %3 삭제중 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2029"/>
+        <location filename="../installwizard.cpp" line="2082"/>
         <source>Executing remove script : %1 ...</source>
         <translation>삭제 스크립트 실행: %1 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2075"/>
-        <location filename="../installwizard.cpp" line="2081"/>
+        <location filename="../installwizard.cpp" line="2128"/>
+        <location filename="../installwizard.cpp" line="2134"/>
         <source>Remove %1 ... </source>
         <translation>%1 삭제 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2077"/>
-        <location filename="../installwizard.cpp" line="2083"/>
-        <location filename="../installwizard.cpp" line="2094"/>
-        <location filename="../installwizard.cpp" line="2128"/>
-        <location filename="../installwizard.cpp" line="2135"/>
-        <location filename="../installwizard.cpp" line="2148"/>
-        <location filename="../installwizard.cpp" line="2175"/>
-        <location filename="../installwizard.cpp" line="2190"/>
+        <location filename="../installwizard.cpp" line="2130"/>
+        <location filename="../installwizard.cpp" line="2136"/>
+        <location filename="../installwizard.cpp" line="2147"/>
+        <location filename="../installwizard.cpp" line="2181"/>
+        <location filename="../installwizard.cpp" line="2188"/>
+        <location filename="../installwizard.cpp" line="2201"/>
+        <location filename="../installwizard.cpp" line="2228"/>
+        <location filename="../installwizard.cpp" line="2243"/>
         <source>Completed</source>
         <translation>완료</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2079"/>
-        <location filename="../installwizard.cpp" line="2150"/>
+        <location filename="../installwizard.cpp" line="2132"/>
+        <location filename="../installwizard.cpp" line="2203"/>
         <source>Failed (Not empty)</source>
         <translation>실패 (안 비었음)</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2085"/>
-        <location filename="../installwizard.cpp" line="2096"/>
-        <location filename="../installwizard.cpp" line="2130"/>
-        <location filename="../installwizard.cpp" line="2137"/>
-        <location filename="../installwizard.cpp" line="2177"/>
-        <location filename="../installwizard.cpp" line="2192"/>
+        <location filename="../installwizard.cpp" line="2138"/>
+        <location filename="../installwizard.cpp" line="2149"/>
+        <location filename="../installwizard.cpp" line="2183"/>
+        <location filename="../installwizard.cpp" line="2190"/>
+        <location filename="../installwizard.cpp" line="2230"/>
+        <location filename="../installwizard.cpp" line="2245"/>
         <source>Failed</source>
         <translation>실패</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2092"/>
+        <location filename="../installwizard.cpp" line="2145"/>
         <source>Remove installed file list for %1: %2 ... </source>
         <translation>%1의 설치 파일 목록 삭제: %2 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2126"/>
+        <location filename="../installwizard.cpp" line="2179"/>
         <source>Remove installed package index %1 ... </source>
         <translation>설치된 패키지 인덱스 파일 %1을 삭제 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2133"/>
+        <location filename="../installwizard.cpp" line="2186"/>
         <source>Remove Tizen SDK configurations: %1 ... </source>
         <translation>Tizen SDK 설정 지우기: %1 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2140"/>
+        <location filename="../installwizard.cpp" line="2193"/>
         <source>Remove Tizen SDK directory %1 ...</source>
         <translation>Tizen SDK 디렉토리 지우기 %1 ...</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2169"/>
+        <location filename="../installwizard.cpp" line="2222"/>
         <source>Failed to start remove script: %1</source>
         <oldsource>Failed to start install script: %1</oldsource>
         <translation>삭제 스크립트 시작 실패: %1</translation>
     </message>
     <message>
-        <location filename="../installwizard.cpp" line="2188"/>
+        <location filename="../installwizard.cpp" line="2241"/>
         <source>Remove the cleanup script for %1: %2 ... </source>
         <translation>%1의 삭제 스크립트를 지웁니다: %2 ...</translation>
     </message>
