@@ -22,7 +22,10 @@ Boston, MA 02111-1307, USA.
 import os, sys
 
 # package index url
+# for alpha
 pi_url='https://source.tizen.org/tizensdkpackages/current/linux-packages/Packages.list'
+# for beta linux version
+pi_url='http://source.tizen.org/tizensdkpackages/release/pkg_list_linux'
 target_dir = '.'
 
 if __name__=='__main__':
@@ -45,15 +48,17 @@ if __name__=='__main__':
     pkg_index = os.popen("curl -s --insecure "+pi_url).read()
     download_queue = []
     try:
-        open(target_dir+os.path.sep+'Packages.list','w').write(pkg_index)
+        open(target_dir+os.path.sep+pi_url.split('/')[-1],'w').write(pkg_index)
     except IOError, msg:
         print 'permission denied: create file on '+target_dir
         sys.exit(1)
     for x in pkg_index.split('\n'):
-        if not x.startswith("Path:"):
+        if not x.startswith("Path"):
             continue
         key, value = x.split(":")
-        filename = os.path.basename(value.strip())
+        filename = value.strip()
+        if filename.startswith('/'):
+            filename = filename[1:]
         pkg_url = pi_url.replace(pi_url.split("/")[-1], filename)
         download_queue.append((pkg_url, filename))
     count = 0
@@ -61,6 +66,9 @@ if __name__=='__main__':
         print
         print '[%d/%d] Downloading %s into %s' % \
                 (count+1, len(download_queue), pkg_url, target_dir)
+        dirname = os.path.dirname(filename)
+        if len(dirname)>0:
+            os.system("mkdir -p "+target_dir+os.path.sep+dirname)
         cmd = "curl --insecure -o "+target_dir+os.path.sep+filename+" "+pkg_url
         if 0 != os.system(cmd):
             print 'interrupted'
