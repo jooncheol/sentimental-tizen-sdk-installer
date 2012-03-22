@@ -45,7 +45,7 @@ if __name__=='__main__':
         if len(sys.argv)>2:
             pi_url = sys.argv[2]
 
-    pkg_index = os.popen("curl -s --insecure "+pi_url).read()
+    pkg_index = os.popen("curl -L -s --insecure "+pi_url).read()
     download_queue = []
     try:
         open(target_dir+os.path.sep+pi_url.split('/')[-1],'w').write(pkg_index)
@@ -69,7 +69,7 @@ if __name__=='__main__':
         dirname = os.path.dirname(filename)
         if len(dirname)>0:
             os.system("mkdir -p "+target_dir+os.path.sep+dirname)
-        cmd = "curl --insecure -o "+target_dir+os.path.sep+filename+" "+pkg_url
+        cmd = "curl -L --insecure -o "+target_dir+os.path.sep+filename+" "+pkg_url
         if 0 != os.system(cmd):
             print 'interrupted'
             try:
