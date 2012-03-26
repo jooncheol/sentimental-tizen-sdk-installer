@@ -140,6 +140,7 @@ public:
     void shell(const QString &, const QString &cwd);
     QStandardItemModel* createPackageItemModel();
     bool createDir(const QString &);
+    QString installedPath() { return mInstalledPath; };
 protected:
     virtual void addLog(const QString &str, bool newline=true, const QString &color=QString::null);
     virtual void downloadFinished(const QNetworkReply *, const QByteArray &);
@@ -180,6 +181,7 @@ private:
     bool                    mHashCheck;
     QString                 mHexHashData;
     QCryptographicHash      *mHash;
+    QString                 mInstalledPath;
 };
 
 class IntroPage : public BasePage
@@ -332,6 +334,7 @@ private:
     int             mCurrent;
     TizenPackage    *mCurrentPackage;
     TizenPackageIndex *mInstalledPackageIndex;
+    QString         mInstalledList;
     QString         mInstallScript;
     int             mCurrentFileCountFromZip;
     bool            mCompleted;
@@ -348,8 +351,6 @@ public:
     virtual void initializePage();
     virtual int nextId() const;
 protected:
-    virtual void downloadFinished(const QNetworkReply *, const QByteArray &);
-    virtual void downloadError(const QString &errorStr);
 private:
     QCheckBox *mShowChangeLog;
     QCheckBox *mShowInstallLog;
@@ -402,7 +403,6 @@ protected:
     virtual void processStandardOutput(const QByteArray &);
     virtual void processStandardError(const QByteArray &);
 private:
-    QString         mInstalledPath;
     QFile           mLogFile;
     QProgressBar    *mProgressBar;
     QLabel          *mCurrentStatus;

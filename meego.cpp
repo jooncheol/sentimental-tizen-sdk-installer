@@ -97,6 +97,7 @@ MeeGo::MeeGo(int w, int h, QWidget *parent) :
     mMonologs << tr("Which editor do you prefer... Vim? Emacs?");
     mMonologs << tr("If you are digging on Ubuntu. You should install qemu-kvm binutils-multiarch debhelper fakeroot realpath procps libsdl-gfx1.2-4 gettext liblua5.1-0 libdbus-1-3 libcurl3.");
     mMonologs << tr("Do you want to see the Tizen's emulator code? Read carefully the license agreement...");
+    mMonologs << tr("Tizen! Do not modify my ~/.bashrc ! :(");
     // add monolog for your local area
     if(QLocale::system().name()=="ko_KR") {
         // SNSD, Tiara, Kara, IU are lovely idol singer groups in Korea :-)

@@ -84,7 +84,7 @@ InstallWizard::InstallWizard(const QString &tizenPackageIndexUrl, bool withMeeGo
     if(withMeeGo)
         setWindowTitle(tr("Sentimental Tizen SDK Installer"));
     else
-        setWindowTitle(tr("Tizen SDK Installer"));
+        setWindowTitle(tr("Unofficial Tizen SDK Installer"));
     setWindowIcon(QIcon(":/images/tizen-sdk-installmanager.png"));
     setMinimumWidth(700);
 
@@ -125,8 +125,10 @@ void InstallWizard::resizeEvent(QResizeEvent *event)
 }
 void InstallWizard::loadInstalledPackageList()
 {
+    qDebug() << "installedPackageIndexPath" << installedPackageIndexPath();
     QFile f(installedPackageIndexPath());
     if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "open";
         QString data = f.readAll();
         f.close();
 
@@ -147,7 +149,7 @@ void InstallWizard::openEditor(const QString &path)
         QProcess::startDetached("open", args);
 #endif
 #ifdef Q_WS_X11
-        QProcess::startDetached("gedit", args);
+        QProcess::startDetached("xdg-open", args);
 #endif
 #ifdef Q_WS_WIN
         QProcess::startDetached("notepad.exe", args);
@@ -166,7 +168,7 @@ void InstallWizard::accept()
 
 QString InstallWizard::installedPackageIndexPath()
 {
-        QString path;
+/* // for alpha
 #ifdef Q_OS_LINUX
         QString dirPath =
                 QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()
@@ -180,6 +182,10 @@ QString InstallWizard::installedPackageIndexPath()
         path =
                 QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()+"InstalledPackages.list";
 #endif
+*/
+        QString path = ((BasePage*)page(Intro))->installedPath();
+        if(path != "unknown")
+            path = path+QDir::separator()+".info"+QDir::separator()+"installedpackage.list";
         return path;
 }
 #ifdef Q_OS_LINUX
@@ -276,6 +282,21 @@ BasePage::BasePage(QWidget *parent)
     mHashCheck = false;
     mHash = new QCryptographicHash(QCryptographicHash::Md5);
     mProcess = NULL;
+    mInstalledPath = "unknown";
+
+#ifdef Q_OS_LINUX
+    QString confPath = QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()+".TizenSDK"+QDir::separator()+"tizensdkpath" ;
+    QFile f(confPath);
+    if(f.exists()) {
+        f.open(QIODevice::ReadOnly|QIODevice::Text);
+        mInstalledPath = f.readAll().split('=').at(1);
+        f.close();
+    }
+#else
+    QString confPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()+"Tizen.conf";
+    QSettings settings(confPath, QSettings::IniFormat);
+    mInstalledPath =  settings.value("installed-path", "unknown").toString();
+#endif
 }
 TizenPackageIndex* BasePage::packageIndex()
 {
@@ -311,6 +332,27 @@ void BasePage::setBanner()
     setPixmap(QWizard::WatermarkPixmap, banner());
 #endif
 }
+static void addSubItems(QStandardItem *parentItem, TizenPackage *parentPackage)
+{
+    for(int j=0; j<parentPackage->count(); j++) {
+        TizenPackage *subPackage = parentPackage->at(j);
+        QStandardItem *subitem = new QStandardItem(subPackage->name());
+        subitem->setCheckable(true);
+        subitem->setCheckState(Qt::Checked);
+        subitem->setEnabled(false);
+        subitem->setToolTip(subPackage->description());
+        subitem->setData("tizen");
+        QList<QStandardItem*> columns;
+        columns << subitem;
+        columns << new QStandardItem(subPackage->version());
+        columns << new QStandardItem(subPackage->statusString());
+        columns << new QStandardItem(TizenPackageIndex::aboutSize((uint64_t)subPackage->totalSize()));
+        for(int k=0; k<columns.count(); k++)
+            columns.at(k)->setEditable(false);
+        parentItem->appendRow(columns);
+        addSubItems(subitem, subPackage);
+    }
+}
 QStandardItemModel* BasePage::createPackageItemModel()
 {
     QStandardItemModel *model = new QStandardItemModel();
@@ -322,7 +364,7 @@ QStandardItemModel* BasePage::createPackageItemModel()
     model->setHorizontalHeaderItem(3, new QStandardItem(tr("Size")));
     for( int i=0; i<packageIndex()->count(); i++ ) {
         TizenPackage *package = packageIndex()->at(i);
-        if(package->attribute()=="root") {
+        if(package->attribute()=="meta") {
             QStandardItem *item = new QStandardItem(package->name());
             item->setCheckable(true);
             item->setCheckState(Qt::Checked);
@@ -337,32 +379,7 @@ QStandardItemModel* BasePage::createPackageItemModel()
             for(int k=0; k<columns.count(); k++)
                 columns.at(k)->setEditable(false);
             model->appendRow(columns);
-            /* Making sub tree items
-            XXX Package List from Tizen repository server is little bit strange.
-            e.g 'usb-connection-for-ssh' depends on 'tizen-ide'. I think that
-            'tizen-ide' have to depends on the 'usb-connection-for-ssh'. And the
-            root package item which depends on 'usb-connection-for-ssh'
-            is also depends on 'tizen-ide'. Since it looks lack consistency for
-            the dependencies between packages, we may can skip making multi-depth
-            sub items.
-            */
-            for(int j=0; j<package->count(); j++) {
-                TizenPackage *subPackage = package->at(j);
-                QStandardItem *subitem = new QStandardItem(subPackage->name());
-                subitem->setCheckable(true);
-                subitem->setCheckState(Qt::Checked);
-                subitem->setEnabled(false);
-                subitem->setToolTip(subPackage->description());
-                subitem->setData("tizen");
-                QList<QStandardItem*> columns;
-                columns << subitem;
-                columns << new QStandardItem(subPackage->version());
-                columns << new QStandardItem(subPackage->statusString());
-                columns << new QStandardItem(TizenPackageIndex::aboutSize((uint64_t)subPackage->size()));
-                for(int k=0; k<columns.count(); k++)
-                    columns.at(k)->setEditable(false);
-                item->appendRow(columns);
-            }
+            addSubItems(item, package);
         }
     }
     return model;
@@ -605,7 +622,8 @@ void BasePage::shell(const QString &cmd, const QString &currentWorkingDir)
     QString targetDirPath = field("tizeninstaller.installpath").toString();
     sysEnv << QString("INSTALLED_PATH=%1").arg(targetDirPath);
     sysEnv << QString("MAKESHORTCUT_PATH=%1").arg(currentWorkingDir+QDir::separator()+"makeshortcut.sh");
-    sysEnv << QString("REMOVESHORTCUT_PATH=%1").arg(currentWorkingDir+QDir::separator()+"removeshortcut.sh");
+    //sysEnv << QString("REMOVESHORTCUT_PATH=%1").arg(currentWorkingDir+QDir::separator()+"removeshortcut.sh"); // for alpha
+    sysEnv << QString("REMOVE_SHORTCUT=%1").arg(currentWorkingDir+QDir::separator()+"removeshortcut.sh");
     if(mProcess) {
         mProcess->close();
         delete mProcess;
@@ -621,7 +639,7 @@ void BasePage::shell(const QString &cmd, const QString &currentWorkingDir)
     connect(mProcess, SIGNAL(stateChanged(QProcess::ProcessState)), this, SLOT(slotStateChanged(QProcess::ProcessState)));
     qDebug() << QString("INSTALLED_PATH=%1").arg(targetDirPath);
     qDebug() << QString("MAKESHORTCUT_PATH=%1").arg(currentWorkingDir+QDir::separator()+"makeshortcut.sh");
-    qDebug() << QString("REMOVESHORTCUT_PATH=%1").arg(currentWorkingDir+QDir::separator()+"removeshortcut.sh");
+    qDebug() << QString("REMOVE_SHORTCUT=%1").arg(currentWorkingDir+QDir::separator()+"removeshortcut.sh");
     qDebug() << "cd" << currentWorkingDir;
     qDebug() << "cmd" << cmd;
     mProcess->start(cmd);
@@ -868,6 +886,21 @@ void InstallConfigurePage::initializePage()
     setupNetworkAccessManager();
     downloadText(((InstallWizard*)wizard())->packageListURL());
 }
+static bool installAvailable(QStandardItem *parentItem, TizenPackageIndex *tpi)
+{
+    for(int j=0; j<parentItem->rowCount(); j++) {
+        QStandardItem *subItem = parentItem->child(j);
+        TizenPackage *subPackage = tpi->find(subItem->text());
+        if(subItem->checkState()==Qt::Checked &&
+               (subPackage->status()==TizenPackage::NewPackage
+            ||  subPackage->status()==TizenPackage::UpgradePackage)) {
+            return true;
+        }
+        if(installAvailable(subItem, tpi))
+            return true;
+    }
+    return false;
+}
 bool InstallConfigurePage::isComplete() const
 {
     if(!mPackageListDownloaded)
@@ -883,18 +916,25 @@ bool InstallConfigurePage::isComplete() const
                 ||  package->status()==TizenPackage::UpgradePackage)) {
                 return true;
             }
-            for(int j=0; j<item->rowCount(); j++) {
-                QStandardItem *subItem = item->child(j);
-                TizenPackage *subPackage = ((InstallWizard*)wizard())->packageIndex()->find(subItem->text());
-                if(subItem->checkState()==Qt::Checked &&
-                       (subPackage->status()==TizenPackage::NewPackage
-                    ||  subPackage->status()==TizenPackage::UpgradePackage)) {
-                    return true;
-                }
-            }
+            if(installAvailable(item, ((InstallWizard*)wizard())->packageIndex()))
+                return true;
         }
     }
     return false;
+}
+static void addSubPackageForInstall(QStringList &packageList, QStandardItem *parentItem, TizenPackageIndex *tpi)
+{
+    for(int j=0; j<parentItem->rowCount(); j++) {
+        QStandardItem *subItem = parentItem->child(j);
+        TizenPackage *subPackage = tpi->find(subItem->text());
+        if(subItem->checkState()==Qt::Checked &&
+               (subPackage->status()==TizenPackage::NewPackage
+            ||  subPackage->status()==TizenPackage::UpgradePackage)) {
+            addSubPackageForInstall(packageList, subItem, tpi);
+            if(!packageList.contains(subItem->text()))
+                packageList << subItem->text();
+        }
+    }
 }
 QStringList InstallConfigurePage::packageNames()
 {
@@ -906,18 +946,12 @@ QStringList InstallConfigurePage::packageNames()
                 continue;
             TizenPackage *package = packageIndex()->find(item->text());
             if(item->checkState()==Qt::Checked) {
-                for(int j=0; j<item->rowCount(); j++) {
-                    QStandardItem *subItem = item->child(j);
-                    TizenPackage *subPackage = packageIndex()->find(subItem->text());
-                    if(subItem->checkState()==Qt::Checked &&
-                           (subPackage->status()==TizenPackage::NewPackage
-                        ||  subPackage->status()==TizenPackage::UpgradePackage)) {
-                        packageList << subItem->text();
-                    }
-                }
+                addSubPackageForInstall(packageList, item, packageIndex());
                 if((package->status()==TizenPackage::NewPackage
-                    ||  package->status()==TizenPackage::UpgradePackage))
-                    packageList << item->text();
+                    ||  package->status()==TizenPackage::UpgradePackage)) {
+                    if(!packageList.contains(item->text()))
+                        packageList << item->text();
+                }
             }
         }
     }
@@ -1440,7 +1474,7 @@ void InstallingPage::slotUpdateDownloadStatus()
     mCurrentSpeed->setText("");
     mProgressBar->setMaximum(100);
     mProgressBar->setValue(0);
-    QUrl url =  ((InstallWizard*)wizard())->packageListURL().resolved(QUrl(mCurrentPackage->path()));
+    QUrl url =  ((InstallWizard*)wizard())->packageListURL().resolved(QUrl("./"+mCurrentPackage->path()));
     addLog(mCurrentStatus->text(), false);
     //setHashCheck(true); // FIXME Qt4 doesn't support SHA-2
     downloadData(url, mCacheDir);
@@ -1487,6 +1521,7 @@ void InstallingPage::downloadFinished(const QNetworkReply *reply)
         if(!createDir(targetDirPath))
             return;
         qDebug() << QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+/* // for alpha
 #ifdef Q_OS_LINUX
         if(!createDir(QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()
                 +".TizenSDK"+QDir::separator()+"info"+QDir::separator()+"installedlist"))
@@ -1500,7 +1535,7 @@ void InstallingPage::downloadFinished(const QNetworkReply *reply)
         if(!createDir(QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()+"remove-scripts"))
             return;
 #endif
-
+*/
         if(mTimer.isActive())
             mTimer.stop();
         mCurrent = 0;
@@ -1579,7 +1614,8 @@ void InstallingPage::slotUpdateExtractStatus()
     mProgressBar->setValue(0);
     addLog(mCurrentStatus->text());
 
-    QString tempPackagePath = QUrl::fromLocalFile(mCacheDir+QDir::separator()+"tizensdk").resolved(QUrl(mCurrentPackage->path())).toLocalFile();
+    QString tempPackagePath = mCacheDir+QDir::separator()+QDir::separator()+QFileInfo(mCurrentPackage->path()).fileName();
+    qDebug() << "tmp file path: " << tempPackagePath;
     mQuaZip = new QuaZip(tempPackagePath);
     mQuaZip->open(QuaZip::mdUnzip);
     mCurrentFileCountFromZip = mQuaZip->getFileNameList().count();
@@ -1592,6 +1628,7 @@ void InstallingPage::slotUpdateExtractStatus()
     copyScriptFromResource(":/etc/removeshortcut.sh");
 
     if(mQuaZip->goToFirstFile()) {
+        mInstalledList.clear();
         QTimer::singleShot(0, this, SLOT(slotExtracting()));
     } else
         QTimer::singleShot(0, this, SLOT(slotExtractFinished()));
@@ -1610,11 +1647,10 @@ void InstallingPage::slotExtracting()
 
 
     QString path;
-    QString installedList;
     if(zipfile.getActualFileName().startsWith("data")) {
-        path = zipfile.getActualFileName().mid(5); // remove 'data/' from filename;
+        path = zipfile.getActualFileName().mid(5); //  'data/' from filename;
         if(!path.isEmpty())
-            installedList += path+"\n";
+            mInstalledList += path+"\n";
         else
             goto extractNext;
         if(S_ISDIR(zipinfo.externalAttr >> 16) && !targetDir.exists(path)) {
@@ -1646,6 +1682,7 @@ void InstallingPage::slotExtracting()
                         || fi.fileName().toLower()=="remove.bat"
     #endif
                         ) {
+/* // for alpha
 #ifdef Q_OS_LINUX
                     QString dir = QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()
                             +".TizenSDK"+QDir::separator()+"info"+QDir::separator()+"removescript"
@@ -1655,6 +1692,8 @@ void InstallingPage::slotExtracting()
                                 +QDir::separator()+"remove-scripts"+QDir::separator()
                                 +mCurrentPackage->name();
 #endif
+*/
+                    QString dir = targetDirPath+QDir::separator()+".info"+QDir::separator()+mCurrentPackage->name();
                     if(!createDir(dir))
                         return;
                     path = dir+QDir::separator()+fi.filePath();
@@ -1682,6 +1721,7 @@ extractNext:
     } else {
         mCurrentRemainTime->setText("");
         delete mQuaZip;
+/* // for alpha
 #ifdef Q_OS_LINUX
         QString logfile =  QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()
                 +".TizenSDK"+QDir::separator()+"info"+QDir::separator()+"installedlist"
@@ -1691,11 +1731,15 @@ extractNext:
                 +QDir::separator()+"installed-packages"+QDir::separator()
                 +mCurrentPackage->name()+".list";
 #endif
+*/
+        if(!createDir(targetDirPath+QDir::separator()+".info"+QDir::separator()+mCurrentPackage->name()))
+            return;
 
-
+        QString logfile = targetDirPath+QDir::separator()+".info"+QDir::separator()
+                +mCurrentPackage->name()+QDir::separator()+mCurrentPackage->name()+".list";
         QFile log(logfile);
         log.open(QIODevice::WriteOnly);
-        log.write(installedList.toLocal8Bit().constData());
+        log.write(mInstalledList.toLocal8Bit().constData());
         log.close();
         addLog(tr("Saved installed file list into %1").arg(logfile));
         QTimer::singleShot(0, this, SLOT(slotExtractFinished()));
@@ -1777,7 +1821,9 @@ void InstallingPage::extractFinished(QProcess::ExitStatus exitStatus)
         addLog(tr("Saved config file: %1").arg(confPath));
         addLog(tr("Completed"), true, "green");
 
-        QString installedPackageIndexPath = ((InstallWizard*)wizard())->installedPackageIndexPath();
+        QString installedPackageIndexPath =
+                targetDirPath + QDir::separator() + ".info"
+                + QDir::separator() + "installedpackage.list";
         QFile f(installedPackageIndexPath);
         f.open(QIODevice::WriteOnly|QIODevice::Text);
 
@@ -1832,14 +1878,13 @@ InstallCompletePage::InstallCompletePage(QWidget *parent)
     setBannerType(InstallerBannerInstall, 4);
     setBanner();
 
-    //setFinalPage(true);
+    setFinalPage(true);
 
     QLabel *label = new QLabel(tr("Thank you for installing Tizen SDK")+"\n\n"
                         +tr("To use the SDK program, Open the Application menu, find the Tizen SDK folder, and click the program icon."));
     label->setWordWrap(true);
 
     mShowChangeLog = new QCheckBox(tr("Show release note."));
-    mShowChangeLog->setEnabled(false);
     registerField("tizeninstaller.showreleasenote", mShowChangeLog);
 
     mShowInstallLog = new QCheckBox(tr("Show install log."));
@@ -1858,44 +1903,9 @@ int InstallCompletePage::nextId() const
 }
 void InstallCompletePage::initializePage()
 {
-    setupNetworkAccessManager();
-    mReleaseNoteURL = ((InstallWizard*)wizard())->packageListURL().resolved(QUrl("RELEASE_NOTE.txt"));
-    downloadText(mReleaseNoteURL);
-    qDebug() << mReleaseNoteURL;
     if(((InstallWizard*)wizard())->meego())
         ((InstallWizard*)wizard())->meego()->sayLastMessage();
 }
-void InstallCompletePage::downloadError(const QString &errorStr)
-{
-    (void)errorStr;
-    mShowChangeLog->setChecked(false);
-    mShowChangeLog->setEnabled(false);
-}
-void InstallCompletePage::downloadFinished(const QNetworkReply *reply, const QByteArray &data)
-{
-    QVariant redirectionTarget = reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-    if(reply->error()) {
-        if(QMessageBox::No == QMessageBox::warning(this, tr("Download failed"),
-            tr("Failed to retrieve release note from repository server. Retry?"),
-            QMessageBox::Yes|QMessageBox::No, QMessageBox::No))
-            return;
-        downloadText(mReleaseNoteURL);
-        return;
-    } else if(!redirectionTarget.isNull()) {
-        QUrl newUrl = redirectionTarget.toUrl();
-        downloadText(newUrl);
-        return;
-    }
-    mShowChangeLog->setChecked(true);
-    mShowChangeLog->setEnabled(true);
-    QString releaseNotePath = field("tizeninstaller.installpath").toString()+QDir::separator()+"RELEASE_NOTE.txt";
-    QFile target(releaseNotePath);
-    target.open(QIODevice::WriteOnly);
-    target.write(data);
-    target.close();
-}
-
-
 
 
 
@@ -1969,6 +1979,15 @@ bool UninstallConfigurePage::isComplete() const
     }
     return false;
 }
+static void addSubPackageForUninstall(QStringList &packageList, QStandardItem *parentItem)
+{
+    for(int j=0; j<parentItem->rowCount(); j++) {
+        QStandardItem *subItem = parentItem->child(j);
+        addSubPackageForUninstall(packageList, subItem);
+        if(!packageList.contains(subItem->text()))
+            packageList << subItem->text();
+    }
+}
 QStringList UninstallConfigurePage::packageNames()
 {
     QStringList packageList;
@@ -1976,9 +1995,9 @@ QStringList UninstallConfigurePage::packageNames()
         for(int i=0; i<mModel->rowCount(); i++) {
             QStandardItem *package = mModel->item(i);
             if(package->checkState()==Qt::Checked) {
-                for(int j=0; j<package->rowCount(); j++)
-                    packageList << package->child(j)->text();
-                packageList << package->text();
+                addSubPackageForUninstall(packageList, package);
+                if(!packageList.contains(package->text()))
+                    packageList << package->text();
             }
         }
     }
@@ -2025,22 +2044,11 @@ void UninstallingPage::initializePage()
 
     addLog(tr("Preparing to uninstall ..."));
 
-#ifdef Q_OS_LINUX
-    QString confPath = QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()+".TizenSDK"+QDir::separator()+"tizensdkpath" ;
-    QFile f(confPath);
-    f.open(QIODevice::ReadOnly|QIODevice::Text);
-    mInstalledPath = f.readAll().split('=').at(1);
-    f.close();
-#else
-    QString confPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()+"Tizen.conf";
-    QSettings settings(confPath, QSettings::IniFormat);
-    mInstalledPath =  settings.value("installed-path", "unknown").toString();
-#endif
-    if(mInstalledPath=="unknown") {
+    if(installedPath()=="unknown") {
         addLog(tr("Could not load tizen sdk install path on your system"));
         return;
     }
-    addLog(tr("Installed Tizen SDK path on your system: %1").arg(mInstalledPath));
+    addLog(tr("Installed Tizen SDK path on your system: %1").arg(installedPath()));
     mCompleted = false;
     QTimer::singleShot(0, this, SLOT(slotUpdateRemoveStatus()));
 }
@@ -2055,6 +2063,7 @@ void UninstallingPage::slotUpdateRemoveStatus()
     mProgressBar->setMaximum(200); // remove script (100) + remove installed files(100)
     mProgressBar->setValue(0);
     addLog(mCurrentStatus->text());
+/* // for alpha
 #ifdef Q_OS_LINUX
     QString removeScriptDirPath =
             QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()
@@ -2065,6 +2074,9 @@ void UninstallingPage::slotUpdateRemoveStatus()
             QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()
             +"remove-scripts"+QDir::separator()+mCurrentPackage->name();
 #endif
+*/
+    QString removeScriptDirPath = installedPath()+QDir::separator()+".info"
+            +QDir::separator()+mCurrentPackage->name();
     QDir removeScriptDir(removeScriptDirPath);
     QString removeScriptName = QString::null;
     if(removeScriptDir.exists()) {
@@ -2102,6 +2114,7 @@ void UninstallingPage::slotUpdateRemoveStatus()
 }
 void UninstallingPage::slotCleanupInstalledFiles()
 {
+/* // for alpha
 #ifdef Q_OS_LINUX
     QString installedFileLog = QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()
                 +".TizenSDK"+QDir::separator()+"info"+QDir::separator()+"installedlist"
@@ -2111,19 +2124,24 @@ void UninstallingPage::slotCleanupInstalledFiles()
             +QDir::separator()+"installed-packages"+QDir::separator()
             +mCurrentPackage->name()+".list";
 #endif
+*/
+    QString installedFileDir =installedPath()+QDir::separator()+".info"
+            +QDir::separator()+mCurrentPackage->name();
+    QString installedFileLog = installedFileDir
+            +QDir::separator()+mCurrentPackage->name()+".list";
     QFile f(installedFileLog);
     if(f.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QString data = f.readAll();
         QStringList list = data.split("\n");
         f.close();
 
-        QDir installedDir(mInstalledPath);
+        QDir installedDir(installedPath());
         for(int i=list.count()-1; i>=0; i--) {
             QString name = list.at(i);
             if(name.trimmed()=="")
                 continue;
             if(installedDir.exists(name)) {
-                QFileInfo fi(mInstalledPath+QDir::separator()+name);
+                QFileInfo fi(installedPath()+QDir::separator()+name);
                 if(fi.isDir()) {
                     addLogIntoFile(tr("Remove %1 ... ").arg(name), false);
                     if(installedDir.rmdir(name))
@@ -2142,8 +2160,10 @@ void UninstallingPage::slotCleanupInstalledFiles()
             mProgressBar->setValue(100+((list.count()-i)*100 / list.count()));
         }
     }
-    addLog(tr("Remove installed file list for %1: %2 ... ").arg(mCurrentPackage->name()).arg(installedFileLog), false);
-    if(QFile::remove(installedFileLog))
+    QDir dir(installedPath()+QDir::separator()+".info");
+    addLog(tr("Remove installed file list for %1: %2 ... ").arg(mCurrentPackage->name()).arg(installedFileDir), false);
+
+    if(removeDir(installedFileDir))
         addLog(tr("Completed"), true, "green");
     else
         addLog(tr("Failed"), true, "red");
@@ -2182,7 +2202,13 @@ void UninstallingPage::slotCleanupFinish()
         else
             addLog(tr("Failed"), true, "red");
 
-        QString confPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()+"Tizen.conf";
+#ifdef Q_OS_LINUX
+        QString confPath = QDesktopServices::storageLocation(QDesktopServices::HomeLocation)
+                +QDir::separator()+".TizenSDK"+QDir::separator()+"tizensdkpath" ;
+#else
+        QString confPath = QDesktopServices::storageLocation(QDesktopServices::DataLocation)
+                +QDir::separator()+"Tizen.conf";
+#endif
         addLog(tr("Remove Tizen SDK configurations: %1 ... ").arg(confPath), false);
         if(QFile::remove(confPath))
             addLog(tr("Completed"), true, "green");
@@ -2190,12 +2216,12 @@ void UninstallingPage::slotCleanupFinish()
             addLog(tr("Failed"), true, "red");
 
         bool ret = false;
-        addLog(tr("Remove Tizen SDK directory %1 ...").arg(mInstalledPath));
+        addLog(tr("Remove Tizen SDK directory %1 ...").arg(installedPath()));
         if(!field("tizeninstaller.removeoption").toBool())
-            ret = removeDir(mInstalledPath);
+            ret = removeDir(installedPath());
         else {
-            QDir dir(mInstalledPath);
-            ret = dir.rmdir(mInstalledPath);
+            QDir dir(installedPath());
+            ret = dir.rmdir(installedPath());
         }
         if(ret)
             addLog(tr("Completed"), true, "green");
@@ -2229,6 +2255,7 @@ void UninstallingPage::processFinished(int exitCode, QProcess::ExitStatus exitSt
     else
         addLog(tr("Failed"), true, "red");
     mProgressBar->setValue(100);
+/* // for alpha
 #ifdef Q_OS_LINUX
     QString removeScriptDirPath =
             QDesktopServices::storageLocation(QDesktopServices::HomeLocation)+QDir::separator()
@@ -2236,8 +2263,12 @@ void UninstallingPage::processFinished(int exitCode, QProcess::ExitStatus exitSt
             +QDir::separator()+mCurrentPackage->name();
 #else
     QString removeScriptDirPath =
-            QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()+"remove-scripts"+QDir::separator()+mCurrentPackage->name();
+            QDesktopServices::storageLocation(QDesktopServices::DataLocation)+QDir::separator()
+            +"remove-scripts"+QDir::separator()+mCurrentPackage->name();
 #endif
+*/
+    QString removeScriptDirPath = installedPath()+QDir::separator()+".info"
+            +QDir::separator()+mCurrentPackage->name();
     addLog(tr("Remove the cleanup script for %1: %2 ... ").arg(mCurrentPackage->name()).arg(removeScriptDirPath), false);
     if(removeDir(removeScriptDirPath))
         addLog(tr("Completed"), true, "green");
@@ -2279,6 +2310,8 @@ UninstallCompletePage::UninstallCompletePage(QWidget *parent)
     setTitle(tr("Uninstallation completed"));
     setBannerType(InstallerBannerUninstall, 3);
     setBanner();
+
+    setFinalPage(true);
 
     QLabel *label = new QLabel(tr("Thank you for using Tizen SDK"));
     label->setWordWrap(true);
