@@ -1549,6 +1549,8 @@ void InstallingPage::downloadError(const QString &errorStr)
 }
 void InstallingPage::downloadProgress(qint64 byteReceieved, qint64 byteTotal)
 {
+    if(byteTotal==-1)
+        byteTotal = mCurrentPackage->size();
     mProgressBar->setValue((int)(byteReceieved*100/byteTotal));
     QString received = QString("%1 / %2")
                 .arg(TizenPackageIndex::aboutSize((uint64_t)byteReceieved))

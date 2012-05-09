@@ -26,6 +26,8 @@ import os, sys
 pi_url='https://source.tizen.org/tizensdkpackages/current/linux-packages/Packages.list'
 # for beta linux version
 pi_url='http://source.tizen.org/tizensdkpackages/release/pkg_list_linux'
+# for 1.0 Larkspur
+pi_url='http://download.tizen.org/sdk/current/pkg_list_linux'
 target_dir = '.'
 
 if __name__=='__main__':
