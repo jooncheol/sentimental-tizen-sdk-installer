@@ -782,7 +782,7 @@ InstallConfigurePageNetwork::InstallConfigurePageNetwork(QWidget *parent)
     connect(mProxyHost, SIGNAL(textChanged(QString)), this, SIGNAL(completeChanged()));
     mProxyPort = new QSpinBox(this);
     mProxyPort->setMinimum(22);
-    mProxyPort->setMaximum(9999);
+    mProxyPort->setMaximum(65535);
     mProxyPort->setValue(8080);
 
     mProxyAuthLabel = new QLabel(tr("Authentication (Optional)"), this);
