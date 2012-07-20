@@ -59,6 +59,7 @@
 #include <sys/param.h>
 #include <sys/mount.h>
 #include <QDesktopServices>
+#include <QSettings>
 #include "quazipfile.h"
 
 static QTextCodec *gCodec = NULL;
@@ -1202,12 +1203,17 @@ InstallConfigurePageLocation::InstallConfigurePageLocation(QWidget *parent)
 
     QLabel *label = new QLabel(tr("Choose a location where you want to install."));
     label->setWordWrap(true);
-    mPath = new QLineEdit();
+
     QPushButton *button = new QPushButton("...", this);
     button->setFocusPolicy(Qt::NoFocus);
     connect(button, SIGNAL(clicked()), this, SLOT(slotOpenDir()));
-    mPath->setText(QDir::homePath()+QDir::separator()+"tizen_sdk");
-    mPath->setReadOnly(true);
+
+    mPath = new QLineEdit();
+    QSettings settings;
+    settings.beginGroup("paths");
+    mPath->setText(settings.value("lastPath", QDir::homePath()+QDir::separator()+"tizen_sdk").toString());
+    settings.endGroup();
+    mPath->setReadOnly(false);
     mRequiredSpaceLabel = new QLabel(this);
     mAvailableSpaceLabel = new QLabel(this);
     registerField("tizeninstaller.installpath", mPath);
@@ -1262,9 +1268,15 @@ bool InstallConfigurePageLocation::isComplete() const
 }
 void InstallConfigurePageLocation::slotOpenDir()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"), QDir::homePath());
-    if(!dir.isNull())
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"), mPath->text());
+    if(!dir.isNull()) {
         mPath->setText(dir);
+
+        QSettings settings;
+        settings.beginGroup("paths");
+        settings.setValue("lastPath", dir);
+        settings.endGroup();
+    }
 }
 InstallingPage::InstallingPage(QWidget *parent)
     : BasePage(parent)
