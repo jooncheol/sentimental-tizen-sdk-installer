@@ -64,7 +64,7 @@
 
 static QTextCodec *gCodec = NULL;
 InstallWizard::InstallWizard(const QString &tizenPackageIndexUrl, bool withMeeGo, QWidget *parent)
-    : QWizard(parent)
+    : QWizard(parent, Qt::Window)
 {
     mPackageIndex = new TizenPackageIndex();
     mPackageListUrl = QUrl(tizenPackageIndexUrl);
@@ -1124,7 +1124,8 @@ void InstallConfigurePage::slotPKSignalPackage(const QString &info, const QStrin
         for(int i=0; i<columns.count(); i++)
             columns.at(i)->setEditable(false);
         mDistPackagesItem->appendRow(columns);
-        //mTreeView->header()->resizeSections(QHeaderView::ResizeToContents);
+        mTreeView->header()->resizeSections(QHeaderView::ResizeToContents);
+        mTreeView->header()->setResizeMode(0, QHeaderView::Stretch);
     }
 #endif
 }
