@@ -1210,6 +1210,7 @@ InstallConfigurePageLocation::InstallConfigurePageLocation(QWidget *parent)
     connect(button, SIGNAL(clicked()), this, SLOT(slotOpenDir()));
 
     mPath = new QLineEdit();
+    connect(mPath, SIGNAL(editingFinished()), this, SLOT(slotLineEditEditingFinished()));
     QSettings settings;
     settings.beginGroup("paths");
     mPath->setText(settings.value("lastPath", QDir::homePath()+QDir::separator()+"tizen_sdk").toString());
@@ -1263,22 +1264,41 @@ void InstallConfigurePageLocation::initializePage()
 
     //mAvailableSpaceLabel
 }
+
 bool InstallConfigurePageLocation::isComplete() const
 {
     return !mSpaceIsNotEnough;
 }
+
 void InstallConfigurePageLocation::slotOpenDir()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"), mPath->text());
     if(!dir.isNull()) {
         mPath->setText(dir);
 
-        QSettings settings;
-        settings.beginGroup("paths");
-        settings.setValue("lastPath", dir);
-        settings.endGroup();
+        savePath();
     }
 }
+
+bool InstallConfigurePageLocation::validatePage()
+{
+    savePath();
+    return true;
+}
+
+void InstallConfigurePageLocation::slotLineEditEditingFinished()
+{
+    savePath();
+}
+
+void InstallConfigurePageLocation::savePath()
+{
+    QSettings settings;
+    settings.beginGroup("paths");
+    settings.setValue("lastPath", mPath->text());
+    settings.endGroup();
+}
+
 InstallingPage::InstallingPage(QWidget *parent)
     : BasePage(parent)
 {

@@ -128,7 +128,7 @@ public:
     void downloadText(const QUrl &);
     void downloadData(const QUrl &, const QDir &);
     void cancelDownload();
-    void setHashCheck(bool flag) { mHashCheck = flag; };
+    void setHashCheck(bool flag) { mHashCheck = flag; }
     QString hashCode();
     static bool removeDir(const QString &);
     bool createTempInTargetDir();
@@ -140,7 +140,7 @@ public:
     void shell(const QString &, const QString &cwd);
     QStandardItemModel* createPackageItemModel();
     bool createDir(const QString &);
-    QString installedPath() { return mInstalledPath; };
+    QString installedPath() { return mInstalledPath; }
 protected:
     virtual void addLog(const QString &str, bool newline=true, const QString &color=QString::null);
     virtual void downloadFinished(const QNetworkReply *, const QByteArray &);
@@ -269,9 +269,15 @@ public:
     InstallConfigurePageLocation(QWidget *parent = 0);
     virtual void initializePage();
     virtual bool isComplete() const;
+    bool validatePage();
+
 private slots:
     void slotOpenDir();
+    void slotLineEditEditingFinished();
+
 private:
+    void savePath();
+
     QLineEdit *mPath;
     QLabel    *mRequiredSpaceLabel;
     QLabel    *mAvailableSpaceLabel;
