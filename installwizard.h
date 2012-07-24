@@ -269,11 +269,11 @@ public:
     InstallConfigurePageLocation(QWidget *parent = 0);
     virtual void initializePage();
     virtual bool isComplete() const;
-    bool validatePage();
 
 private slots:
     void slotOpenDir();
-    void slotLineEditEditingFinished();
+    void slotInstallPathEditingFinished();
+    void slotInstallPathChanged();
 
 private:
     void savePath();

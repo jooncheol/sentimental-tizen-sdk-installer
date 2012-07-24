@@ -1210,9 +1210,10 @@ InstallConfigurePageLocation::InstallConfigurePageLocation(QWidget *parent)
     connect(button, SIGNAL(clicked()), this, SLOT(slotOpenDir()));
 
     mPath = new QLineEdit();
-    connect(mPath, SIGNAL(editingFinished()), this, SLOT(slotLineEditEditingFinished()));
+    connect(mPath, SIGNAL(textChanged(const QString&)), this, SLOT(slotInstallPathChanged()));
+    connect(mPath, SIGNAL(editingFinished()), this, SLOT(slotInstallPathEditingFinished()));
     QSettings settings;
-    settings.beginGroup("paths");
+    settings.beginGroup("General");
     mPath->setText(settings.value("lastPath", QDir::homePath()+QDir::separator()+"tizen_sdk").toString());
     settings.endGroup();
     mPath->setReadOnly(false);
@@ -1267,7 +1268,10 @@ void InstallConfigurePageLocation::initializePage()
 
 bool InstallConfigurePageLocation::isComplete() const
 {
-    return !mSpaceIsNotEnough;
+    QDir dir(mPath->text());
+    QDir parentDir(mPath->text());
+    parentDir.cdUp();
+    return !mSpaceIsNotEnough && ((dir.exists() && dir.isReadable()) || (parentDir.exists() && parentDir.isReadable()));
 }
 
 void InstallConfigurePageLocation::slotOpenDir()
@@ -1275,26 +1279,27 @@ void InstallConfigurePageLocation::slotOpenDir()
     QString dir = QFileDialog::getExistingDirectory(this, tr("Select a directory"), mPath->text());
     if(!dir.isNull()) {
         mPath->setText(dir);
-
-        savePath();
+        emit completeChanged();
     }
 }
 
-bool InstallConfigurePageLocation::validatePage()
+void InstallConfigurePageLocation::slotInstallPathEditingFinished()
 {
     savePath();
-    return true;
 }
 
-void InstallConfigurePageLocation::slotLineEditEditingFinished()
+
+void InstallConfigurePageLocation::slotInstallPathChanged()
 {
-    savePath();
+    emit completeChanged();
 }
 
 void InstallConfigurePageLocation::savePath()
 {
+    if(!isComplete())
+        return;
     QSettings settings;
-    settings.beginGroup("paths");
+    settings.beginGroup("General");
     settings.setValue("lastPath", mPath->text());
     settings.endGroup();
 }
